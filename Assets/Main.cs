@@ -2,6 +2,7 @@
 using UnityEditor;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 public enum GameRunningStatus {
     PAUSED,
@@ -24,7 +25,8 @@ public class GameContext {
 public class Main : MonoBehaviour
 {
     public UnityEngine.UI.Text CollisionsText;
-    public UnityEngine.UI.Text TimeText;
+    public TextMeshProUGUI TimeText;
+    public TextMeshProUGUI YouLastedText;
     public AsteroidMovement AsteroidPrefab;
     public Boolean SpawnAsteroids = true;
     public Boolean Timer = true;
@@ -48,9 +50,9 @@ public class Main : MonoBehaviour
         var topOffset = collider.size.y / 2;
         var v3 = Camera.main.ViewportToWorldPoint(new Vector3(0, topOffset, 0));
         var infos = new List<AsteroidInfo>() {
-            new AsteroidInfo(location: new Vector3(0.1f, 0.1f, 10), direction: new Vector3(1, 2, 0), speed: 1, scale: 0.1f)
-            , new AsteroidInfo(new Vector3(0, 1 - topOffset, 10), new Vector3(3, 1, 0), 1.5f, 0.15f)
-            , new AsteroidInfo(new Vector3(1, 1 - topOffset, 10), new Vector3(1, 3, 0), 2f, 0.2f)
+            new AsteroidInfo(location: new Vector3(0.1f, 0.1f, 10), direction: new Vector3(1, 1.5f, 0), speed: 2, scale: 0.1f)
+            , new AsteroidInfo(new Vector3(0, 1 - topOffset, 10), new Vector3(3, 1, 0), 3, 0.15f)
+            , new AsteroidInfo(new Vector3(1, 1 - topOffset, 10), new Vector3(2, 3, 0), 4, 0.2f)
         };
 
         foreach(AsteroidInfo info in infos) {
@@ -123,13 +125,8 @@ public class Main : MonoBehaviour
                     Destroy(asteroid.gameObject);
                 }
                 asteroids.Clear();
+                YouLastedText.text = "You lasted " + timer.ToString("F2") + " seconds";
                 EndGameDialog.SetActive(true);
-                //var ok = EditorUtility.DisplayDialog("Game over!", "You lasted "+ timer + " seconds", "Ok");
-                //if (ok) {
-                //    State(GameState.START_LEVEL);
-                //} else {
-                //    State(GameState.EXIT);
-                //}
                 break;
             case GameState.EXIT:
                 Debug.Log("Goodbye!");
@@ -144,7 +141,7 @@ public class Main : MonoBehaviour
     {
         CollisionsText.text = "Collisions: " + Collisions;
         var seconds = System.Convert.ToInt32(timer);
-        TimeText.text = seconds.ToString();
+        TimeText.text = timer.ToString("F2");
     }
 }
 

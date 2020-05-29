@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Cedric-Dodge.unity
     guid: f1e8a8a6e7013844f9eef89b6404ecfa
+  - enabled: 1
+    path: Assets/Scenes/Recovered scene.unity
+    guid: 0e88e2c10dc55ef4c94a26b5b3f3ff15
   m_configObjects: {}
