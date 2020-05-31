@@ -24,7 +24,6 @@ public class GameContext {
 
 public class Main : MonoBehaviour
 {
-    public UnityEngine.UI.Text CollisionsText;
     public TextMeshProUGUI TimeText;
     public TextMeshProUGUI YouLastedText;
     public AsteroidMovement AsteroidPrefab;
@@ -69,6 +68,7 @@ public class Main : MonoBehaviour
         GameContext.GameState = GameState.SHOWING_DIALOG;
         _player = GameObject.Find("Player");
         _playerStartingPosition = _player.transform.position;
+        _player.SetActive(false);
         WelcomeDialog.SetActive(true);
     }
 
@@ -95,9 +95,33 @@ public class Main : MonoBehaviour
         GameContext.GameState = newState;
     }
 
+    private void ClosestVirus() {
+        AsteroidMovement closest = null;
+        var playerPosition = transform.position;
+        foreach (var ai in asteroids) {
+            if (closest == null) closest = ai;
+            else if (Vector3.Distance(ai.transform.position, playerPosition) < Vector3.Distance(closest.transform.position, playerPosition)) {
+                closest = ai;
+            }
+        }
+        Debug.DrawLine(Vector3.zero, new Vector3(5, 0, 0), Color.white, 2.5f);
+        Debug.DrawLine(playerPosition, closest.transform.position, Color.red, 1);
+    }
+
     private void Update()
     {
-        switch(GameContext.GameState) {
+        //Vector3 p = UtilsClass.GetMouseWorldPosition();
+        //// always draw a 5-unit colored line from the origin
+        //Color color = new Color(q, q, 1.0f);
+        //Debug.DrawLine(Vector3.zero, new Vector3(0, 5, 0), color);
+        //q = q + 0.01f;
+
+        //if (q > 1.0f) {
+        //    q = 0.0f;
+        //}
+
+
+        switch (GameContext.GameState) {
             case GameState.SHOWING_DIALOG:
                 PauseGame();
                 break;
@@ -106,6 +130,7 @@ public class Main : MonoBehaviour
                 EndGameDialog.SetActive(false);
                 WelcomeDialog.SetActive(false);
                 _player.transform.position = _playerStartingPosition;
+                _player.SetActive(true);
                 UnpauseGame();
                 if (SpawnAsteroids) spawnAsteroids();
                 timer = 0f;
@@ -114,6 +139,7 @@ public class Main : MonoBehaviour
                 State(GameState.IN_LEVEL);
                 break;
             case GameState.IN_LEVEL:
+                ClosestVirus();
                 if (Timer) timer += Time.deltaTime;
                 if (IsCollision) {
                     State(GameState.END_LEVEL);
@@ -125,6 +151,7 @@ public class Main : MonoBehaviour
                     Destroy(asteroid.gameObject);
                 }
                 asteroids.Clear();
+                _player.SetActive(false);
                 YouLastedText.text = "You lasted " + timer.ToString("F2") + " seconds";
                 EndGameDialog.SetActive(true);
                 break;
@@ -137,9 +164,10 @@ public class Main : MonoBehaviour
 
     }
 
+    private float q = 0.0f;
+
     private void FixedUpdate()
     {
-        CollisionsText.text = "Collisions: " + Collisions;
         var seconds = System.Convert.ToInt32(timer);
         TimeText.text = timer.ToString("F2");
     }

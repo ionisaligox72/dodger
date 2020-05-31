@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private Rigidbody2D rb2d;        //Store a reference to the Rigidbody2D component required to use 2D Physics.
     private Vector3 startPosition;
+    private Animator _animator;
     public Camera Camera;
     public GameObject TopWall;
 
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour {
         //Get and store a reference to the Rigidbody2D component so that we can access it.
         rb2d = GetComponent<Rigidbody2D> ();
         startPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
+        _animator = GetComponent<Animator>();
         MouseSpeed = 20;
         KeyboardSpeed = 10;
     }
@@ -51,6 +53,7 @@ public class PlayerMovement : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
             Translate(KeyboardSpeed * Time.deltaTime, 0);
+            //_animator.Play("Hair right");
         }
     }
 
