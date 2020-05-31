@@ -7,11 +7,12 @@ public class AsteroidMovement : MonoBehaviour
     public Vector3 Direction;
     public float Speed;
     private Rigidbody2D rb2d;
+    private int SPEED_FACTOR = 80;
 
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        rb2d.AddForce(Direction * Speed * 100);
+        rb2d.AddForce(Direction * Speed * SPEED_FACTOR);
     }
 
     public void Accelerate(float factor) {

@@ -96,16 +96,17 @@ public class Main : MonoBehaviour
     }
 
     private void ClosestVirus() {
-        AsteroidMovement closest = null;
-        var playerPosition = transform.position;
-        foreach (var ai in asteroids) {
-            if (closest == null) closest = ai;
-            else if (Vector3.Distance(ai.transform.position, playerPosition) < Vector3.Distance(closest.transform.position, playerPosition)) {
-                closest = ai;
+        if (false) {
+            AsteroidMovement closest = null;
+            var playerPosition = _player.transform.position;
+            foreach (var ai in asteroids) {
+                if (closest == null) closest = ai;
+                else if (Vector3.Distance(ai.transform.position, playerPosition) < Vector3.Distance(closest.transform.position, playerPosition)) {
+                    closest = ai;
+                }
             }
+            Debug.DrawLine(playerPosition, closest.transform.position, Color.red, 0.5f);
         }
-        Debug.DrawLine(Vector3.zero, new Vector3(5, 0, 0), Color.white, 2.5f);
-        Debug.DrawLine(playerPosition, closest.transform.position, Color.red, 1);
     }
 
     private void Update()
